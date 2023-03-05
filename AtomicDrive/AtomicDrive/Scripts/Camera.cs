@@ -9,7 +9,7 @@ namespace AtomicDrive
 {
     internal class Camera
     {
-        public List<List<int>> Vision(int[,] path,(int,int) carPosition,Directions direction)
+        public List<List<int>> Vision(int[,] path, (int, int) carPosition, Directions direction)
         {
             int n = 9;
             List<List<int>> matrix = new();
@@ -71,7 +71,7 @@ namespace AtomicDrive
             }
             return matrix;
         }
-        public int[,] RotateMatrix(List<List<int>> matrix,Directions direction)
+        public int[,] RotateMatrix(List<List<int>> matrix, Directions direction)
         {
             int[,] m = new int[0, 0];
             if (matrix.Count < 1)
