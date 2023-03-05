@@ -19,9 +19,9 @@ namespace AtomicDrive
             dtgView.RowHeadersVisible = false;
             DrawPath();
         }
+
         public void DrawPath()
         {
-
             dtgView.RowCount = p.Matrix.GetLength(0) + morePixel * 2;
             dtgView.ColumnCount = p.Matrix.GetLength(1) + morePixel * 2;
             AdjustRowColumnHeight();
@@ -53,7 +53,7 @@ namespace AtomicDrive
         }
         private void AdjustRowColumnHeight()
         {
-            int rH = (dtgView.Height / dtgView.RowCount)- 1;
+            int rH = (dtgView.Height / dtgView.RowCount) - 1;
             if (rH > 0)
             {
                 for (int i = 0; i < dtgView.RowCount; i++)
@@ -71,14 +71,16 @@ namespace AtomicDrive
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async Task StartGame()
         {
             lst1.Items.Clear();
+            int n;
             for (int i = 0; i < 200000; i++)
             {
-                int n = c.HandleAction(p);
+                n = c.HandleAction(p);
                 lst1.Items.Add(c.Move + " " + (Car.CarActions)c.Actions.IndexOf(c.Action));
                 dtgView[c.CarPosition.Item1 + morePixel, c.CarPosition.Item2 + morePixel].Style.BackColor = Color.Violet;
+
                 if (n == -1)
                 {
                     c.StopAndReset();
@@ -91,6 +93,12 @@ namespace AtomicDrive
                     break;
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DrawPath();
+            StartGame();
         }
 
         private void dtgView_SelectionChanged(object sender, EventArgs e)

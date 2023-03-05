@@ -85,7 +85,7 @@ namespace AtomicDrive
         {
             List<string> keys = Qtables.Keys.ToList();
             keys.Sort();
-            List<List<double>> keysfrequenzes = new();
+            List<List<double>> keysFrequences = new();
             foreach (string key in keys)
             {
                 string[] arr = key.Split('/');
@@ -120,6 +120,7 @@ namespace AtomicDrive
             }
             Qtables = learn;
         }
+
         public void SaveLearn(string name)
         {
             // line is made in this way [key]\[Action0;Action1;Action2...]
@@ -134,8 +135,10 @@ namespace AtomicDrive
             }
             if (File.Exists(name))
             {
-                var a = Qtables.OrderBy(x => x.Key).Select(x => x.Key);
-                var b = Qtables.OrderBy(x => x.Key).Select(x => x.Value);
+                var orderedTable = Qtables.OrderBy(x => x.Key);
+                var keys = orderedTable.Select(x => x.Key);
+                var values = orderedTable.Select(x => x.Value);
+
                 List<string> fil = new();
                 foreach (var element in Qtables)
                 {

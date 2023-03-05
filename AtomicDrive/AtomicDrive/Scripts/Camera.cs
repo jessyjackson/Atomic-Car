@@ -9,7 +9,7 @@ namespace AtomicDrive
 {
     internal class Camera
     {
-        public List<List<int>> Vision(int[,] path, (int, int) carPosition, Directions direction)
+        public List<List<int>> GetVision(int[,] path, (int, int) carPosition, Directions direction)
         {
             int n = 9;
             List<List<int>> matrix = new();
@@ -71,6 +71,7 @@ namespace AtomicDrive
             }
             return matrix;
         }
+
         public int[,] RotateMatrix(List<List<int>> matrix, Directions direction)
         {
             int[,] m = new int[0, 0];
@@ -159,6 +160,7 @@ namespace AtomicDrive
             }
             return m;
         }
+
         public Dictionary<int, int> ReduceVision(int[,] vision)
         {
             Dictionary<int, int> angles = new()
@@ -179,6 +181,8 @@ namespace AtomicDrive
                     {
                         double r = Math.Atan2(gy, gx);
                         int grades = (int)(r * (180 / Math.PI));
+
+                        // join negative angles into the positive ones to keep it simpler
                         if (grades == -45)
                         {
                             grades = 135;

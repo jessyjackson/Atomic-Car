@@ -25,6 +25,9 @@ namespace AtomicDrive
             Continue,
         }
 
+        public const int STARTING_POINTS = 50;
+        public const int INITIAL_SPEED = 1;
+
         public int Move { get; set; } = 0;
         public int Speed { get; set; }
         public int Points { get; set; }
@@ -39,21 +42,23 @@ namespace AtomicDrive
         public Car((int, int) position)
         {
             Direction = Directions.Nord;
-            Points = 100;
+            Points = STARTING_POINTS;
             Actions = new List<Action>
             {
-                Accelarete,
+                Accelerate,
                 Decelerate,
                 TurnRight,
                 TurnLeft,
                 Continue,
             };
-            Speed = 1;
+            Speed = INITIAL_SPEED;
             StartPosition = position;
             CarPosition = StartPosition;
             Qlearn = new(Actions);
         }
+
         public void Continue() { MoveCar(); }
+
         public void TurnRight()
         {
             int value = (int)Direction;
@@ -61,6 +66,7 @@ namespace AtomicDrive
             value %= 4;
             Direction = (Directions)value;
         }
+
         public void TurnLeft()
         {
             int value = (int)Direction;
@@ -71,7 +77,8 @@ namespace AtomicDrive
             }
             Direction = (Directions)value;
         }
-        public void Accelarete()
+
+        public void Accelerate()
         {
             if (Speed != 4)
             {
@@ -79,6 +86,7 @@ namespace AtomicDrive
             }
             MoveCar();
         }
+
         public void Decelerate()
         {
             if (Speed != 0)
@@ -87,6 +95,7 @@ namespace AtomicDrive
             }
             MoveCar();
         }
+
         public void MoveCar()
         {
             CarPosition = Direction switch
@@ -98,10 +107,11 @@ namespace AtomicDrive
                 _ => CarPosition,
             };
         }
+
         public int HandleAction(Path path)
         {
             //create state
-            string state = Qlearn.CreateState(Camera.ReduceVision(Camera.RotateMatrix(Camera.Vision(path.Matrix, CarPosition, Direction), Direction)), Speed);
+            string state = Qlearn.CreateState(Camera.ReduceVision(Camera.RotateMatrix(Camera.GetVision(path.Matrix, CarPosition, Direction), Direction)), Speed);
             //invoke action
             Action = Qlearn.SelectAction(Actions, state);
             OldPosition = CarPosition;
@@ -117,7 +127,7 @@ namespace AtomicDrive
             //add episode to learning list
             Qlearn.AddStepToEpisode(e);
             //console log
-            ConsoleLog(state, r);
+            LogCarData(state, r);
             //return 1 for victory, -1 for loose, 0 for nothing
             if (Points < 0 || path.Loose == r)
             {
@@ -129,7 +139,8 @@ namespace AtomicDrive
             }
             return 0;
         }
-        public void ConsoleLog(string state, int reward)
+
+        public void LogCarData(string state, int reward)
         {
             Console.WriteLine("Move:" + Move);
             Console.WriteLine("Points: " + Points);
@@ -142,6 +153,7 @@ namespace AtomicDrive
             Console.WriteLine("New Direction: " + Direction);
             Console.WriteLine("Indice azione: " + (CarActions)Actions.IndexOf(Action));
         }
+
         public void StopAndReset()
         {
             Qlearn.AddStateToQTable();
