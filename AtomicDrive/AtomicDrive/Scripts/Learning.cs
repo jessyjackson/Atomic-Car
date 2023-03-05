@@ -87,6 +87,7 @@ namespace AtomicDrive
             List<string> keys = Qtables.Keys.ToList();
             keys.Sort();
             List<List<double>> keysfrequenzes = new();
+            //non mi piace
             foreach (string key in keys)
             {
                 if (key != ExtraSpace)
