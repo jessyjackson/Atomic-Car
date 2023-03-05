@@ -4,6 +4,7 @@ namespace AtomicDrive
     internal class Learning
     {
         public int Train { get; set; } = 190000;
+        public string ExtraSpace { get; set; } = "extraspace";
         public string FileName { get; set; } = "log.txt";
         public int Face { get; set; } = 0;
         public Dictionary<string, List<double>> Qtables = new();
@@ -21,9 +22,9 @@ namespace AtomicDrive
             {
                 OpenSavedLearn(FileName);
             }
-            if (!Qtables.ContainsKey("extraspace"))
+            if (!Qtables.ContainsKey(ExtraSpace))
             {
-                Qtables.Add("extraspace", l);
+                Qtables.Add(ExtraSpace, l);
             }
         }
         public string CreateState(Dictionary<int, int> frequences, int speed)
@@ -35,7 +36,7 @@ namespace AtomicDrive
         {
             double alpha = 0.9;
             double gamma = 1;
-            Episodes.Add(new Episode("extraspace", null));
+            Episodes.Add(new Episode(ExtraSpace, null));
             for (int i = Episodes.Count - 2; i >= 0; i--)
             {
                 if (Qtables.Count == 0 || !(Qtables.ContainsKey(Episodes[i].State)))
@@ -60,7 +61,7 @@ namespace AtomicDrive
         public Action SelectAction(List<Action> actions, string state)
         {
             Random possibilityofRandAction = new();
-            //FindTheSimilarState(state);
+            FindTheSimilarState(state);
             if (Face < Train)
             {
                 //(n-x)/n
@@ -88,11 +89,26 @@ namespace AtomicDrive
             List<List<double>> keysfrequenzes = new();
             foreach (string key in keys)
             {
-                string[] arr = key.Split('/');
-                foreach (string s in arr)
+                if (key != ExtraSpace)
                 {
-                    char[] charToRemove = { 'H', 'V', 'L', 'R', 'D', 'S' };
+                    string[] arr = key.Split('/');
+                    foreach (string s in arr)
+                    {
+                        char[] charToRemove = { 'H', 'V', 'L', 'R', 'D', 'S' };
+                        foreach (char c in charToRemove)
+                        {
+                            s.Replace(c, '&');
+                        }
+
+                    }
+                    List<double> firstStateFrequenzes = new();
+                    foreach (string val in arr)
+                    {
+                        firstStateFrequenzes.Add(Convert.ToDouble(val));
+                    }
                 }
+
+
             }
 
             return "";

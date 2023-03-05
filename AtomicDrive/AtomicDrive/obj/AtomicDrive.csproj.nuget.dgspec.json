@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucon\\source\\repos\\4BI\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj": {}
+    "C:\\Users\\lucon\\Desktop\\AtomicCar\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucon\\source\\repos\\4BI\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj": {
+    "C:\\Users\\lucon\\Desktop\\AtomicCar\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucon\\source\\repos\\4BI\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj",
+        "projectUniqueName": "C:\\Users\\lucon\\Desktop\\AtomicCar\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj",
         "projectName": "AtomicDrive",
-        "projectPath": "C:\\Users\\lucon\\source\\repos\\4BI\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj",
+        "projectPath": "C:\\Users\\lucon\\Desktop\\AtomicCar\\AtomicDrive\\AtomicDrive\\AtomicDrive.csproj",
         "packagesPath": "C:\\Users\\lucon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucon\\source\\repos\\4BI\\AtomicDrive\\AtomicDrive\\obj\\",
+        "outputPath": "C:\\Users\\lucon\\Desktop\\AtomicCar\\AtomicDrive\\AtomicDrive\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
