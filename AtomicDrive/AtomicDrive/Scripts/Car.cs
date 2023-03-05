@@ -118,7 +118,7 @@ namespace AtomicDrive
             OldDirection = Direction;
             Action.Invoke();
             Move++;
-            //Create episode
+            //Create episode // TODO: WHY IS KEEPING ONLY ONE ACTION?
             Episode e = new(state, Action);
             //rewards
             int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
