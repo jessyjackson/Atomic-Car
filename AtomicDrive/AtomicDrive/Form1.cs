@@ -77,7 +77,7 @@ namespace AtomicDrive
             for (int i = 0; i < 200000; i++)
             {
                 int n = c.HandleAction(p);
-                lst1.Items.Add(c.Move + " " + (Car.NameActions)c.Actions.IndexOf(c.Action));
+                lst1.Items.Add(c.Move + " " + (Car.CarActions)c.Actions.IndexOf(c.Action));
                 dtgView[c.CarPosition.Item1 + morePixel, c.CarPosition.Item2 + morePixel].Style.BackColor = Color.Violet;
                 if (n == -1)
                 {

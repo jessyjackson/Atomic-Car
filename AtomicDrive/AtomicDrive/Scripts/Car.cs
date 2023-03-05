@@ -6,6 +6,7 @@ namespace AtomicDrive
     {
         public Learning Qlearn;
         public Camera Camera = new();
+
         public enum Directions
         {
             //this order for increment operator
@@ -14,7 +15,8 @@ namespace AtomicDrive
             Sud,
             Ovest
         }
-        public enum NameActions
+
+        public enum CarActions
         {
             Accelarete,
             Decelerate,
@@ -22,18 +24,19 @@ namespace AtomicDrive
             TurnLeft,
             Continue,
         }
+
         public int Move { get; set; } = 0;
         public int Speed { get; set; }
         public int Points { get; set; }
         public Directions Direction { get; set; }
         public Directions OldDirection { get; set; }
-        public (int,int) StartPosition { get; set; }
-        public (int, int) CarPosition { get; set; }//item1 = x; item2 = y
-        public (int,int) OldPosition { get; set; }
+        public (int, int) StartPosition { get; set; }
+        public (int, int) CarPosition { get; set; } //item1 = x; item2 = y
+        public (int, int) OldPosition { get; set; }
         public List<Action> Actions { get; set; }
         public Action Action { get; set; }
-        
-        public Car((int,int)position)
+
+        public Car((int, int) position)
         {
             Direction = Directions.Nord;
             Points = 100;
@@ -126,7 +129,7 @@ namespace AtomicDrive
             }
             return 0;
         }
-        public void ConsoleLog(string state,int reward)
+        public void ConsoleLog(string state, int reward)
         {
             Console.WriteLine("Move:" + Move);
             Console.WriteLine("Points: " + Points);
@@ -137,7 +140,7 @@ namespace AtomicDrive
             Console.WriteLine("Speed:" + Speed);
             Console.WriteLine("Old Direction: " + OldDirection);
             Console.WriteLine("New Direction: " + Direction);
-            Console.WriteLine("Indice azione: " + (NameActions)Actions.IndexOf(Action));
+            Console.WriteLine("Indice azione: " + (CarActions)Actions.IndexOf(Action));
         }
         public void StopAndReset()
         {
