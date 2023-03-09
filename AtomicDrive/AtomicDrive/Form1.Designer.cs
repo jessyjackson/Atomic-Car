@@ -36,6 +36,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtTry = new System.Windows.Forms.TextBox();
             this.lblTrain = new System.Windows.Forms.Label();
             this.btnTraining = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -125,6 +127,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.txtTry);
             this.groupBox3.Controls.Add(this.lblTrain);
             this.groupBox3.Controls.Add(this.btnTraining);
             this.groupBox3.Location = new System.Drawing.Point(843, 149);
@@ -134,10 +138,27 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Training";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(118, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 15);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Number of move";
+            // 
+            // txtTry
+            // 
+            this.txtTry.Location = new System.Drawing.Point(8, 33);
+            this.txtTry.Name = "txtTry";
+            this.txtTry.Size = new System.Drawing.Size(100, 23);
+            this.txtTry.TabIndex = 2;
+            this.txtTry.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTry_KeyPress);
+            // 
             // lblTrain
             // 
             this.lblTrain.AutoSize = true;
-            this.lblTrain.Location = new System.Drawing.Point(30, 80);
+            this.lblTrain.Location = new System.Drawing.Point(6, 90);
             this.lblTrain.Name = "lblTrain";
             this.lblTrain.Size = new System.Drawing.Size(38, 15);
             this.lblTrain.TabIndex = 1;
@@ -145,7 +166,7 @@
             // 
             // btnTraining
             // 
-            this.btnTraining.Location = new System.Drawing.Point(31, 37);
+            this.btnTraining.Location = new System.Drawing.Point(6, 64);
             this.btnTraining.Name = "btnTraining";
             this.btnTraining.Size = new System.Drawing.Size(97, 23);
             this.btnTraining.TabIndex = 0;
@@ -211,5 +232,7 @@
         private Label lblTrain;
         private GroupBox groupBox4;
         private Button btnDelete;
+        private Label label1;
+        private TextBox txtTry;
     }
 }

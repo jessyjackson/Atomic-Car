@@ -119,15 +119,22 @@ namespace AtomicDrive
         }
         public void EnableDisableTraining()
         {
+            if (txtTry.Text.Length > 0)
+            {
+                Try = Convert.ToInt32(txtTry.Text);
+            }
             if (c.Qlearn.Train == 0)
             {
+
                 c.Qlearn.Train = (int)(Try - (Try * (0.1)));
+                lblTrain.Text = "Training Enable, " + Try + ", move\n" + " " + c.Qlearn.Train + " training move";
             }
             else
             {
                 c.Qlearn.Train = 0;
+                lblTrain.Text = "Training Disable, " + Try + ", move\n" + " " + c.Qlearn.Train + " training move";
             }
-            lblTrain.Text = "Training Enable, " + c.Qlearn.Train + " try";
+           
         }
         private void dtgView_SelectionChanged(object sender, EventArgs e)
         {
@@ -138,6 +145,14 @@ namespace AtomicDrive
         {
             //File.Delete(c.Qlearn.FileName);
             //File.Create(c.Qlearn.FileName);
+        }
+
+        private void txtTry_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

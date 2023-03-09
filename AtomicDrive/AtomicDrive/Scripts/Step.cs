@@ -10,7 +10,7 @@ namespace AtomicDrive
     {
         public string State { get; set; }
         public Action Action { get; set; }
-        public int Reward { get; set; }
+        public double Reward { get; set; }
         public (int,int) Position { get; set; }
         public Step(string s,Action a)
         {
