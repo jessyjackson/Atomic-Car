@@ -3,12 +3,12 @@ namespace AtomicDrive
 {
     internal class Learning
     {
-        public int Train { get; set; } = 190000;
+        public int Train { get; set; } = 180000;
         public string ExtraSpace { get; set; } = "extraspace";
         public string FileName { get; set; } = "log.txt";
         public int Face { get; set; } = 0;
         public Dictionary<string, List<double>> Qtables = new();
-        public List<Episode> Episodes { get; set; } = new();
+        public List<Step> Episode { get; set; } = new();
         public List<Action>? Actions { get; set; }
         public Learning(List<Action> a)
         {
@@ -27,6 +27,10 @@ namespace AtomicDrive
                 Qtables.Add(ExtraSpace, l);
             }
         }
+        public List<Step> GetSteps()
+        {
+            return Episode;
+        }
         public string CreateState(Dictionary<int, int> frequences, int speed)
         {
             // Horizontal/Vertical/RightDiagonal/LeftDiagonal/Speed
@@ -36,32 +40,31 @@ namespace AtomicDrive
         {
             double alpha = 0.9;
             double gamma = 1;
-            Episodes.Add(new Episode(ExtraSpace, null));
-            for (int i = Episodes.Count - 2; i >= 0; i--)
+            Episode.Add(new Step(ExtraSpace, null));
+            for (int i = Episode.Count - 2; i >= 0; i--)
             {
-                if (Qtables.Count == 0 || !(Qtables.ContainsKey(Episodes[i].State)))
+                if (Qtables.Count == 0 || !(Qtables.ContainsKey(Episode[i].State)))
                 {
-                    Qtables.Add(Episodes[i].State, new List<double>());
+                    Qtables.Add(Episode[i].State, new List<double>());
                     for (int j = 0; j < 5; j++)
                     {
-                        Qtables[Episodes[i].State].Add(0);
+                        Qtables[Episode[i].State].Add(0);
                     }
                 }
-                double news = (1 - alpha) * Qtables[Episodes[i].State][Actions.IndexOf(Episodes[i].Action)] + alpha * (Episodes[i].Reward + gamma * Qtables[Episodes[i + 1].State].Max());
-                Qtables[Episodes[i].State][Actions.IndexOf(Episodes[i].Action)] = news;
+                double news = (1 - alpha) * Qtables[Episode[i].State][Actions!.IndexOf(Episode[i].Action)] + alpha * (Episode[i].Reward + gamma * Qtables[Episode[i + 1].State].Max());
+                Qtables[Episode[i].State][Actions.IndexOf(Episode[i].Action)] = news;
             }
             SaveLearn(FileName);
-            Episodes.Clear();
+            Episode = new();
 
         }
-        public void AddStepToEpisode(Episode e)
+        public void AddStepToEpisode(Step e)
         {
-            Episodes.Add(e);
+            Episode.Add(e);
         }
         public Action SelectAction(List<Action> actions, string state)
         {
             Random possibilityofRandAction = new();
-            FindTheSimilarState(state);
             if (Face < Train)
             {
                 //(n-x)/n
@@ -87,6 +90,7 @@ namespace AtomicDrive
             List<string> keys = Qtables.Keys.ToList();
             keys.Sort();
             List<List<double>> keysfrequenzes = new();
+
             //non mi piace
             foreach (string key in keys)
             {
@@ -108,10 +112,7 @@ namespace AtomicDrive
                         firstStateFrequenzes.Add(Convert.ToDouble(val));
                     }
                 }
-
-
             }
-
             return "";
         }
         public void OpenSavedLearn(string name)
@@ -140,19 +141,11 @@ namespace AtomicDrive
         public void SaveLearn(string name)
         {
             // line is made in this way [key]\[Action0;Action1;Action2...]
-            foreach (var r in Qtables)
-            {
-                Console.Write(r.Key);
-                foreach (var strin in r.Value)
-                {
-                    Console.Write(" " + strin);
-                }
-                Console.WriteLine();
-            }
             if (File.Exists(name))
             {
-                var a = Qtables.OrderBy(x => x.Key).Select(x => x.Key);
-                var b = Qtables.OrderBy(x => x.Key).Select(x => x.Value);
+                var orderQtable = Qtables.OrderBy(x => x.Key);
+                var a = orderQtable.Select(x => x.Key);
+                var b = orderQtable.Select(x => x.Value);
                 List<string> fil = new();
                 foreach (var element in Qtables)
                 {
@@ -166,7 +159,6 @@ namespace AtomicDrive
                 }
                 fil.Sort();
                 File.WriteAllLines(name, fil);
-
             }
             else
             {

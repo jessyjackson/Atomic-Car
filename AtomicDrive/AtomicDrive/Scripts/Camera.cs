@@ -9,20 +9,20 @@ namespace AtomicDrive
 {
     internal class Camera
     {
+        public int VisionRange { get; set; } = 9;
         public List<List<int>> Vision(int[,] path,(int,int) carPosition,Directions direction)
         {
-            int n = 9;
             List<List<int>> matrix = new();
             int x = carPosition.Item1;
             int y = carPosition.Item2;
             if (direction == Directions.Nord)
             {
 
-                for (int i = Math.Max((y - n - 1), 0); i < y - 1; i++)
+                for (int i = Math.Max((y - VisionRange - 1), 0); i < y - 1; i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Max((x - (n / 2)), 0); j < Math.Min((x + (n / 2) + 1), path.GetLength(0)); j++)
+                    for (int j = Math.Max((x - (VisionRange / 2)), 0); j < Math.Min((x + (VisionRange / 2) + 1), path.GetLength(0)); j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -32,11 +32,11 @@ namespace AtomicDrive
             else if (direction == Directions.Est)
             {
 
-                for (int i = Math.Max((y - (n / 2)), 0); i < Math.Min((y + (n / 2) + 1), path.GetLength(1)); i++)
+                for (int i = Math.Max((y - (VisionRange / 2)), 0); i < Math.Min((y + (VisionRange / 2) + 1), path.GetLength(1)); i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Min((x + 1), (path.GetLength(0))); j < Math.Min((x + (n + 1)), path.GetLength(0)); j++)
+                    for (int j = Math.Min((x + 1), (path.GetLength(0))); j < Math.Min((x + (VisionRange + 1)), path.GetLength(0)); j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -45,11 +45,11 @@ namespace AtomicDrive
             }
             else if (direction == Directions.Sud)
             {
-                for (int i = Math.Min((y + 1), (path.GetLength(1))); i < Math.Min((y + 1 + n), path.GetLength(1)); i++)
+                for (int i = Math.Min((y + 1), (path.GetLength(1))); i < Math.Min((y + 1 + VisionRange), path.GetLength(1)); i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Max(0, (x - (n / 2))); j < Math.Min(path.GetLength(0), (x + (n / 2) + 1)); j++)
+                    for (int j = Math.Max(0, (x - (VisionRange / 2))); j < Math.Min(path.GetLength(0), (x + (VisionRange / 2) + 1)); j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -59,11 +59,11 @@ namespace AtomicDrive
             else if (direction == Directions.Ovest)
             {
 
-                for (int i = Math.Max((y - (n / 2)), 0); i < Math.Min(path.GetLength(0), (y + (n / 2) + 1)); i++)
+                for (int i = Math.Max((y - (VisionRange / 2)), 0); i < Math.Min(path.GetLength(0), (y + (VisionRange / 2) + 1)); i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Max((x - 1 - n), 0); j < x - 1; j++)
+                    for (int j = Math.Max((x - 1 - VisionRange), 0); j < x - 1; j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -101,7 +101,7 @@ namespace AtomicDrive
             }
             else if (direction == Directions.Est)
             {
-                m = new int[matrix[0].Count(), matrix.Count()];
+                m = new int[matrix[0].Count, matrix.Count];
                 int c = (matrix[0].Count - 1);
                 int r = 0;
                 for (int i = 0; i < matrix[r].Count; i++)
@@ -147,15 +147,6 @@ namespace AtomicDrive
                     r = matrix.Count - 1;
                 }
 
-            }
-            Console.WriteLine("visione ruotata");
-            for (int i = 0; i < m.GetLength(0); i++)
-            {
-                for (int j = 0; j < m.GetLength(1); j++)
-                {
-                    Console.Write(m[i, j]);
-                }
-                Console.WriteLine();
             }
             return m;
         }

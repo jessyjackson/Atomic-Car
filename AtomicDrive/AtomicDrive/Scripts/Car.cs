@@ -16,7 +16,7 @@ namespace AtomicDrive
         }
         public enum NameActions
         {
-            Accelarete,
+            Accelarate,
             Decelerate,
             TurnRight,
             TurnLeft,
@@ -25,6 +25,7 @@ namespace AtomicDrive
         public int Move { get; set; } = 0;
         public int Speed { get; set; }
         public int Points { get; set; }
+        public int StartPoints { get; set; }
         public Directions Direction { get; set; }
         public Directions OldDirection { get; set; }
         public (int,int) StartPosition { get; set; }
@@ -32,11 +33,12 @@ namespace AtomicDrive
         public (int,int) OldPosition { get; set; }
         public List<Action> Actions { get; set; }
         public Action Action { get; set; }
-        
-        public Car((int,int)position)
+
+        public Car((int, int) position, int points)
         {
             Direction = Directions.Nord;
-            Points = 100;
+            StartPoints = points;
+            Points = points;
             Actions = new List<Action>
             {
                 Accelarete,
@@ -105,16 +107,18 @@ namespace AtomicDrive
             OldDirection = Direction;
             Action.Invoke();
             Move++;
-            //Create episode
-            Episode e = new(state, Action);
+            //Create eppisode
+            Step e = new(state, Action);
             //rewards
             int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
             Points += r;
             e.Reward = r;
-            //add episode to learning list
+            //position
+            e.Position = CarPosition;
+            //add eppisode to learning list
             Qlearn.AddStepToEpisode(e);
             //console log
-            ConsoleLog(state, r);
+            //ConsoleLog(state, r);
             //return 1 for victory, -1 for loose, 0 for nothing
             if (Points < 0 || path.Loose == r)
             {
@@ -139,14 +143,17 @@ namespace AtomicDrive
             Console.WriteLine("New Direction: " + Direction);
             Console.WriteLine("Indice azione: " + (NameActions)Actions.IndexOf(Action));
         }
-        public void StopAndReset()
+        public List<Step> StopAndReset()
         {
+            List<Step> episode = Qlearn.GetSteps();
             Qlearn.AddStateToQTable();
+            episode.RemoveAt(episode.Count - 1);
             CarPosition = StartPosition;
-            Points = 100;
+            Points = StartPoints; 
             Speed = 1;
             Direction = Directions.Nord;
             Move = 0;
+            return episode;
         }
     }
 }

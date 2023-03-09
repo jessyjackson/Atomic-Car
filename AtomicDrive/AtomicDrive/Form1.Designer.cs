@@ -35,8 +35,15 @@
             this.cboPath = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblTrain = new System.Windows.Forms.Label();
+            this.btnTraining = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgView)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtgView
@@ -61,7 +68,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(613, 35);
+            this.button1.Location = new System.Drawing.Point(6, 24);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -81,6 +88,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lst1);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Location = new System.Drawing.Point(613, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(219, 573);
@@ -115,14 +123,65 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Path";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblTrain);
+            this.groupBox3.Controls.Add(this.btnTraining);
+            this.groupBox3.Location = new System.Drawing.Point(843, 149);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(223, 172);
+            this.groupBox3.TabIndex = 8;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Training";
+            // 
+            // lblTrain
+            // 
+            this.lblTrain.AutoSize = true;
+            this.lblTrain.Location = new System.Drawing.Point(30, 80);
+            this.lblTrain.Name = "lblTrain";
+            this.lblTrain.Size = new System.Drawing.Size(38, 15);
+            this.lblTrain.TabIndex = 1;
+            this.lblTrain.Text = "Train: ";
+            // 
+            // btnTraining
+            // 
+            this.btnTraining.Location = new System.Drawing.Point(31, 37);
+            this.btnTraining.Name = "btnTraining";
+            this.btnTraining.Size = new System.Drawing.Size(97, 23);
+            this.btnTraining.TabIndex = 0;
+            this.btnTraining.Text = "Enable/Disable";
+            this.btnTraining.UseVisualStyleBackColor = true;
+            this.btnTraining.Click += new System.EventHandler(this.btnTraining_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnDelete);
+            this.groupBox4.Location = new System.Drawing.Point(843, 485);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(223, 100);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Save";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(6, 22);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(91, 46);
+            this.btnDelete.TabIndex = 0;
+            this.btnDelete.Text = "Delete Saved File";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1071, 597);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.cboPath);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.dtgView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
@@ -131,6 +190,9 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgView)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -144,5 +206,10 @@
         private ComboBox cboPath;
         private Button button2;
         private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private Button btnTraining;
+        private Label lblTrain;
+        private GroupBox groupBox4;
+        private Button btnDelete;
     }
 }
