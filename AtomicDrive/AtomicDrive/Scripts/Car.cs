@@ -26,6 +26,7 @@ namespace AtomicDrive
         public int Speed { get; set; }
         public int Points { get; set; }
         public int StartPoints { get; set; }
+        public Directions StartDirection { get; set; }
         public Directions Direction { get; set; }
         public Directions OldDirection { get; set; }
         public (int,int) StartPosition { get; set; }
@@ -34,9 +35,10 @@ namespace AtomicDrive
         public List<Action> Actions { get; set; }
         public Action Action { get; set; }
 
-        public Car((int, int) position, int points)
+        public Car((int, int) position, int points, Directions d)
         {
-            Direction = Directions.Nord;
+            StartDirection = d;
+            Direction = StartDirection;
             StartPoints = points;
             Points = points;
             Actions = new List<Action>
@@ -51,6 +53,13 @@ namespace AtomicDrive
             StartPosition = position;
             CarPosition = StartPosition;
             Qlearn = new(Actions);
+        }
+        public void ChangePath((int,int) start,int points, Directions d)
+        {
+            StartPosition = start;
+            CarPosition = StartPosition;
+            Points = points;
+            Direction = d;
         }
         public void Continue() { MoveCar(); }
         public void TurnRight()
@@ -110,7 +119,7 @@ namespace AtomicDrive
             //Create eppisode
             Step e = new(state, Action);
             //rewards
-            int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
+            int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection, (Car.NameActions)Actions.IndexOf(Action));
             Points += r;
             e.Reward = r;
             //position
@@ -120,11 +129,11 @@ namespace AtomicDrive
             //console log
             //ConsoleLog(state, r);
             //return 1 for victory, -1 for loose, 0 for nothing
-            if (Points < 0 || path.Loose == r)
+            if (Points < 0 || path.LooseReward == r)
             {
                 return -1;
             }
-            if (r == path.Victory)
+            if (r == path.VictoryReward)
             {
                 return 1;
             }
@@ -132,7 +141,7 @@ namespace AtomicDrive
         }
         public void ConsoleLog(string state,int reward)
         {
-            Console.WriteLine("Move:" + Move);
+            Console.WriteLine("MoveNumber:" + Move);
             Console.WriteLine("Points: " + Points);
             Console.WriteLine("stato: " + state);
             Console.WriteLine("Reward: " + reward);
@@ -143,17 +152,23 @@ namespace AtomicDrive
             Console.WriteLine("New Direction: " + Direction);
             Console.WriteLine("Indice azione: " + (NameActions)Actions.IndexOf(Action));
         }
-        public List<Step> StopAndReset()
+        public void AddState()
+        {
+            Qlearn.AddStateToQTable();
+        }
+        public List<Step> GetSteps()
         {
             List<Step> episode = Qlearn.GetSteps();
-            Qlearn.AddStateToQTable();
-            episode.RemoveAt(episode.Count - 1);
+            return episode;
+        }
+        public void StopAndReset()
+        {
             CarPosition = StartPosition;
             Points = StartPoints; 
             Speed = 1;
-            Direction = Directions.Nord;
+            Direction = StartDirection;
             Move = 0;
-            return episode;
+            Qlearn.DeleteEpisode();
         }
     }
 }

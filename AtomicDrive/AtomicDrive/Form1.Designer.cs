@@ -96,7 +96,7 @@
             this.groupBox1.Size = new System.Drawing.Size(219, 573);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Car";
+            this.groupBox1.Text = "car";
             // 
             // cboPath
             // 

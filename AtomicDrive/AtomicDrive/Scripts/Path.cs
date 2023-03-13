@@ -1,18 +1,21 @@
-﻿using System.Reflection;
+﻿using System.Drawing.Drawing2D;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Drawing;
 
 namespace AtomicDrive
 {
     internal class Path
     {
         public int[,] Matrix { get; set; } = new int[25, 25];
+        public Car.Directions StartDirection { get; set; }
         public (int,int) CarStartCoordinate { get; set; }
         public int CarPoints { get; set; }
         public (int,int) StartCoordinate { get; set; }
         public (int,int) EndCoordinate { get; set; }
-        public int Move { get; set; } = -1;
-        public int Loose { get; set; } = -100;
-        public int Victory { get; set; } = 100;
+        public int MoveReward { get; set; } = -1;
+        public int LooseReward { get; set; } = -100;
+        public int VictoryReward { get; set; } = 100;
         public List<string> Actions { get; set; }
         public Path()
         {
@@ -58,7 +61,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((3, 0), (21, 2));
             CarStartCoordinate = (12, 23);
-            CarPoints = 10;
+            CarPoints = 15;
+            StartDirection = Car.Directions.Nord;
         }
         public void RightCurve()
         {
@@ -96,7 +100,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((23, 2), (24, 6));
             CarStartCoordinate = (12, 23);
-            CarPoints = 25;
+            CarPoints = 30;
+            StartDirection = Car.Directions.Nord;
         }
         public void LeftCurve()
         {
@@ -131,40 +136,43 @@ namespace AtomicDrive
             SetCoordinate((0, 2), (2, 6));
             CarStartCoordinate = (12, 23);
             CarPoints = 25;
+            StartDirection = Car.Directions.Nord;
         }
         public void RoudaBout()
         {
-            int[,] arr = {
-                {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                {1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1},
-                {1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1},
-                {1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1},
-                {1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1},
-                {1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1},
-                {1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1},
-                {1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1},
-                {1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1},
-                {1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1},
-                {1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
-                {1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
-                {1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            int[,] arr = new int[25, 25]
+            {
+                { 1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
+                { 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
+                { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
+                { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
+                { 1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1},
+                { 1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1},
+                { 1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                { 1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                { 1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                { 1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                { 1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1},
+                { 1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1},
+                { 1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
+                { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
+                { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1},
+                { 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
+                { 1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             };
             Matrix = arr;
             CarStartCoordinate = (12, 23);
             SetCoordinate((9, 0), (15, 1));
             CarPoints = 30;
+            StartDirection = Car.Directions.Nord;
         }
         public void SetCoordinate((int,int) start,(int,int)finish)
         {
@@ -195,7 +203,7 @@ namespace AtomicDrive
             }
             return ar;
         }
-        public int GetReward((int,int) oldPos,(int,int) newPos,int speed,Car.Directions oldDirection)
+        public int GetReward((int,int) oldPos,(int,int) newPos,int speed,Car.Directions oldDirection, Car.NameActions action)
         {
             int wall = 1;
             int oldX = oldPos.Item1;
@@ -206,13 +214,14 @@ namespace AtomicDrive
             int startYFLine = StartCoordinate.Item2;
             int endXFLine = EndCoordinate.Item1;
             int endYFLine = EndCoordinate.Item2;
+            
             if (oldX == newX && oldY == newY)
             {
-                return Move;
+                return MoveReward;
             }
             if (newY >= Matrix.GetLength(1) || newY < 0|| newX >= Matrix.GetLength(0) || newX < 0)
             {
-                return Loose;
+                return LooseReward;
             }
             switch (oldDirection)
             {
@@ -221,56 +230,56 @@ namespace AtomicDrive
                     {
                         if (newX >= startXFLine && newX <= endXFLine && i >= startYFLine && i <= endYFLine )
                         {
-                            return Victory;
+                            return VictoryReward;
                         }
                         if (Matrix[i,newX] == wall)
                         {
-                            return Loose;
+                            return LooseReward;
                         }
                     }
-                    return Move;
+                    return MoveReward;
                 case Car.Directions.Est:
                     for (int i = oldX; i <= newX; i++)
                     {
                         if (newY >= startYFLine && newY <= endYFLine && i >= startXFLine && i <= endXFLine)
                         {
-                            return Victory;
+                            return VictoryReward;
                         }
                         if (Matrix[newY,i] == wall)
                         {
-                            return Loose;
+                            return LooseReward;
                         }
                     }
-                    return Move;
+                    return MoveReward;
                 case Car.Directions.Sud:
                     for (int i = oldY; i <= newY; i++)
                     {
                         if (newX >= startXFLine && newX <= endXFLine && i >= startYFLine && i <= endYFLine)
                         {
-                            return Victory;
+                            return VictoryReward;
                         }
                         if (Matrix[i, newX] == wall)
                         {
-                            return Loose;
+                            return LooseReward;
                         }
                     }
-                    return Move;
+                    return MoveReward;
                 case Car.Directions.Ovest:
                     for (int i = oldX; i >= newX; i--)
                     {
                         if (newY >= startYFLine && newY <= endYFLine && i >= startXFLine && i <= endXFLine)
                         {
-                            return Victory;
+                            return VictoryReward;
                         }
 
                         if (Matrix[newY, i] == wall)
                         {
-                            return Loose;
+                            return LooseReward;
                         }
                     }
-                    return Move;
+                    return MoveReward;
                 default:
-                    return Move;
+                    return MoveReward;
             }
         }
     }

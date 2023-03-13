@@ -117,7 +117,7 @@ namespace AtomicDrive
             }
             else if (direction == Directions.Sud)
             {
-                m = new int[matrix.Count(), matrix[0].Count];
+                m = new int[matrix.Count, matrix[0].Count];
                 int c = matrix[matrix.Count - 1].Count - 1;
                 int r = matrix.Count - 1;
                 for (int i = 0; i < matrix.Count; i++)

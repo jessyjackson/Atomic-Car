@@ -38,8 +38,8 @@ namespace AtomicDrive
         }
         public void AddStateToQTable()
         {
-            double alpha = 0.9;
-            double gamma = 1;
+            double alpha = 0.8;
+            double gamma = 0.7;
             Episode.Add(new Step(ExtraSpace, null));
             for (int i = Episode.Count - 2; i >= 0; i--)
             {
@@ -51,12 +51,15 @@ namespace AtomicDrive
                         Qtables[Episode[i].State].Add(0);
                     }
                 }
-                double news = (1 - alpha) * Qtables[Episode[i].State][Actions!.IndexOf(Episode[i].Action)] + alpha * (Episode[i].Reward + gamma * Qtables[Episode[i + 1].State].Max());
+                double news = (1 - alpha) * Qtables[Episode[i].State][Actions!.IndexOf(Episode[i].Action)] + alpha * (Episode[i+1].Reward + gamma * Qtables[Episode[i + 1].State].Max());
                 Qtables[Episode[i].State][Actions.IndexOf(Episode[i].Action)] = news;
             }
             SaveLearn(FileName);
+            DeleteEpisode();
+        }
+        public void DeleteEpisode()
+        {
             Episode = new();
-
         }
         public void AddStepToEpisode(Step e)
         {
@@ -75,7 +78,7 @@ namespace AtomicDrive
                 }
                 Face++;
             }
-            if (Qtables.ContainsKey(state))
+            if(Qtables.ContainsKey(state))
             {
                 int index = Qtables[state].IndexOf(Qtables[state].Max());
                 return actions[index];
@@ -141,29 +144,27 @@ namespace AtomicDrive
         public void SaveLearn(string name)
         {
             // line is made in this way [key]\[Action0;Action1;Action2...]
-            if (File.Exists(name))
-            {
-                var orderQtable = Qtables.OrderBy(x => x.Key);
-                var a = orderQtable.Select(x => x.Key);
-                var b = orderQtable.Select(x => x.Value);
-                List<string> fil = new();
-                foreach (var element in Qtables)
-                {
-                    string ris = "[" + element.Key + "]\\[";
-                    foreach (var number in element.Value)
-                    {
-                        ris += number + ";";
-                    }
-                    ris += "]";
-                    fil.Add(ris);
-                }
-                fil.Sort();
-                File.WriteAllLines(name, fil);
-            }
-            else
+            if (!File.Exists(name))
             {
                 File.Create(name);
+
             }
+            var orderQtable = Qtables.OrderBy(x => x.Key);
+            var a = orderQtable.Select(x => x.Key);
+            var b = orderQtable.Select(x => x.Value);
+            List<string> fil = new();
+            foreach (var element in Qtables)
+            {
+                string ris = "[" + element.Key + "]\\[";
+                foreach (var number in element.Value)
+                {
+                    ris += number + ";";
+                }
+                ris += "]";
+                fil.Add(ris);
+            }
+            fil.Sort();
+            File.WriteAllLines(name, fil);
         }
     }
 }

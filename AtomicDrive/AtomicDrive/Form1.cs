@@ -2,20 +2,20 @@ namespace AtomicDrive
 {
     public partial class Form1 : Form
     {
-        private Car c;
-        private Path p;
-        private int morePixel = 5;
-        private int Try = 20000;
+        private Car car;
+        private Path path;
+        private const int MORE_PIXEL = 5;
+        private int MoveNumber = 20000;
         public Form1()
         {
             InitializeComponent();
-            p = new();
-            c = new(p.CarStartCoordinate,p.CarPoints);
+            path = new();
+            car = new(path.CarStartCoordinate,path.CarPoints, path.StartDirection);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            cboPath.Items.AddRange(p.Actions.ToArray());
+            cboPath.Items.AddRange(path.Actions.ToArray());
             dtgView.ColumnHeadersVisible = false;
             dtgView.RowHeadersVisible = false;
             DrawPath();
@@ -24,8 +24,8 @@ namespace AtomicDrive
         public void DrawPath()
         {
 
-            dtgView.RowCount = p.Matrix.GetLength(0) + morePixel * 2;
-            dtgView.ColumnCount = p.Matrix.GetLength(1) + morePixel * 2;
+            dtgView.RowCount = path.Matrix.GetLength(0) + MORE_PIXEL * 2;
+            dtgView.ColumnCount = path.Matrix.GetLength(1) + MORE_PIXEL * 2;
             AdjustRowColumnHeight();
             for (int i = 0; i < dtgView.RowCount; i++)
             {
@@ -34,24 +34,24 @@ namespace AtomicDrive
                     dtgView[i, j].Style.BackColor = Color.White;
                 }
             }
-            for (int i = p.StartCoordinate.Item1; i <= p.EndCoordinate.Item1; i++)
+            for (int i = path.StartCoordinate.Item1; i <= path.EndCoordinate.Item1; i++)
             {
-                for (int j = p.StartCoordinate.Item2; j <= p.EndCoordinate.Item2; j++)
+                for (int j = path.StartCoordinate.Item2; j <= path.EndCoordinate.Item2; j++)
                 {
-                    dtgView[i + morePixel, j + morePixel].Style.BackColor = Color.Red;
+                    dtgView[i + MORE_PIXEL, j + MORE_PIXEL].Style.BackColor = Color.Red;
                 }
             }
-            for (int i = 0; i < p.Matrix.GetLength(0); i++)
+            for (int i = 0; i < path.Matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < p.Matrix.GetLength(1); j++)
+                for (int j = 0; j < path.Matrix.GetLength(1); j++)
                 {
-                    if (p.Matrix[i, j] == 1)
+                    if (path.Matrix[i, j] == 1)
                     {
-                        dtgView[j + morePixel, i + morePixel].Style.BackColor = Color.Black;
+                        dtgView[j + MORE_PIXEL, i + MORE_PIXEL].Style.BackColor = Color.Black;
                     }
                 }
             }
-            dtgView[c.CarPosition.Item1 + morePixel, c.CarPosition.Item2 + morePixel].Style.BackColor = Color.DarkOrange;
+            dtgView[car.CarPosition.Item1 + MORE_PIXEL, car.CarPosition.Item2 + MORE_PIXEL].Style.BackColor = Color.DarkOrange;
         }
         private void AdjustRowColumnHeight()
         {
@@ -75,42 +75,65 @@ namespace AtomicDrive
         public void DriveCar()
         {
             List<Step> episode = new() ;
-            for (int i = 0; i < Try; i++)
+            for (int i = 0; i < MoveNumber; i++)
             {
-                int n = c.HandleAction(p);
-                lst1.Items.Add(c.Move + " " + (Car.NameActions)c.Actions.IndexOf(c.Action));
-                dtgView[c.CarPosition.Item1 + morePixel, c.CarPosition.Item2 + morePixel].Style.BackColor = Color.Violet;
+                int n = car.HandleAction(path);
+                lst1.Items.Add(car.Move + " " + (Car.NameActions)car.Actions.IndexOf(car.Action) + " " + car.Direction);
+                dtgView[car.CarPosition.Item1 + MORE_PIXEL, car.CarPosition.Item2 + MORE_PIXEL].Style.BackColor = Color.Violet;
                 if (n == -1)
                 {
-                    c.StopAndReset();
-                    lst1.Items.Add("Schiantata");
+                    string s = car.Direction.ToString();
+                    car.AddState();
+                    car.StopAndReset();
+                    lst1.Items.Add("Schiantata:" + s);
                 }
                 if (n == 1)
                 {
-                    episode = c.StopAndReset();
-                    lst1.Items.Add("Vittoria");
-                    if (c.Qlearn.Train == 0)
+                    var tempEpisode = car.GetSteps();
+                    car.AddState();
+                    car.StopAndReset();
+                    if (episode.Count == 0)
+                    {
+                        episode = tempEpisode;
+                    }
+                    else if (episode.Count > tempEpisode.Count)
+                    {
+                        episode = tempEpisode;
+                    }
+                    lst1.Items.Add("Vittoria#############################");
+                    if (car.Qlearn.Train == 0)
                     {
                         break;
                     }
                 }
             }
+            //potrebbero sovrascriversi i dati nuovi con quelli vecchi, bisogna vedere se quando la macchina si schianta ritorna a capo con tutto e se quando alla fine di un 
+            //ciclo ne faccio partire una altro bisogna controllare che tutto si resetti per bene
+            //e aggiunge azioni mai fatte
+            if (episode.Count > 0)
+            {
+                episode.RemoveAt(episode.Count - 1);
+            }
             foreach (var step in episode)
             {
-                dtgView[step.Position.Item1 + morePixel, step.Position.Item2 + morePixel].Style.BackColor = Color.Blue;
+                dtgView[step.Position.Item1 + MORE_PIXEL, step.Position.Item2 + MORE_PIXEL].Style.BackColor = Color.Blue;
             }
+            car.StopAndReset();
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            lst1.Items.Clear();
             DrawPath();
+            lst1.Items.Clear();
             DriveCar();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            p.ChangePath(cboPath.SelectedIndex);
+            path.ChangePath(cboPath.SelectedIndex);
+            car.ChangePath(path.CarStartCoordinate, path.CarPoints,path.StartDirection);
             DrawPath();
+            lst1.Items.Clear();
+            car.StopAndReset();
         }
 
         private void btnTraining_Click(object sender, EventArgs e)
@@ -121,20 +144,20 @@ namespace AtomicDrive
         {
             if (txtTry.Text.Length > 0)
             {
-                Try = Convert.ToInt32(txtTry.Text);
+                MoveNumber = Convert.ToInt32(txtTry.Text);
             }
-            if (c.Qlearn.Train == 0)
+            if (car.Qlearn.Train == 0)
             {
-
-                c.Qlearn.Train = (int)(Try - (Try * (0.1)));
-                lblTrain.Text = "Training Enable, " + Try + ", move\n" + " " + c.Qlearn.Train + " training move";
+                car.Qlearn.Train = (int)(MoveNumber - (MoveNumber * (0.1)));
+                car.Qlearn.Face = 0;
+                lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move";
             }
             else
             {
-                c.Qlearn.Train = 0;
-                lblTrain.Text = "Training Disable, " + Try + ", move\n" + " " + c.Qlearn.Train + " training move";
+                car.Qlearn.Train = 0;
+                car.Qlearn.Face = 0;
+                lblTrain.Text = "Training Disable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move";
             }
-           
         }
         private void dtgView_SelectionChanged(object sender, EventArgs e)
         {
@@ -143,8 +166,7 @@ namespace AtomicDrive
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            //File.Delete(c.Qlearn.FileName);
-            //File.Create(c.Qlearn.FileName);
+            File.WriteAllText(car.Qlearn.FileName, String.Empty);
         }
 
         private void txtTry_KeyPress(object sender, KeyPressEventArgs e)
