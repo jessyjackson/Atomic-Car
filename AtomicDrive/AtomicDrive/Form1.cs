@@ -119,6 +119,7 @@ namespace AtomicDrive
                 dtgView[step.Position.Item1 + MORE_PIXEL, step.Position.Item2 + MORE_PIXEL].Style.BackColor = Color.Blue;
             }
             car.StopAndReset();
+            car.Qlearn.Face = 0;
         }
         private void button1_Click(object sender, EventArgs e)
         {

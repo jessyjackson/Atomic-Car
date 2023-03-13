@@ -78,7 +78,7 @@ namespace AtomicDrive
                 }
                 Face++;
             }
-            if(Qtables.ContainsKey(state))
+            if (Qtables.ContainsKey(state))
             {
                 int index = Qtables[state].IndexOf(Qtables[state].Max());
                 return actions[index];
@@ -88,35 +88,60 @@ namespace AtomicDrive
             Random f = new();
             return actions[f.Next(0, actions.Count)];
         }
+        public static List<int> TransfomStateinList(string state)
+        {
+            List<int> values = new();
+            bool isNumber;
+            string number = "";
+            string checkNumber = "0123456789";
+            foreach (char c in state)
+            {
+                if (checkNumber.Contains(c))
+                {
+                    isNumber = true;
+                }
+                else
+                {
+                    isNumber = false;
+                    if (number.Length > 0 )
+                    {
+                        values.Add(Convert.ToInt32(number));
+                        number = "";
+                    }
+                }
+                if (isNumber)
+                {
+                    number += c;
+                }
+            }
+            return values;
+        }
         public string FindTheSimilarState(string firststate)
         {
             List<string> keys = Qtables.Keys.ToList();
             keys.Sort();
-            List<List<double>> keysfrequenzes = new();
-
-            //non mi piace
+            List<List<int>> keysfrequenzes = new();
+            //state in a list of double
+            List<int> valuefrequenzes = TransfomStateinList(firststate);
+            //transform the list of keys in a list of list of double 
             foreach (string key in keys)
             {
-                if (key != ExtraSpace)
-                {
-                    string[] arr = key.Split('/');
-                    foreach (string s in arr)
-                    {
-                        char[] charToRemove = { 'H', 'V', 'L', 'R', 'D', 'S' };
-                        foreach (char c in charToRemove)
-                        {
-                            s.Replace(c, '&');
-                        }
-
-                    }
-                    List<double> firstStateFrequenzes = new();
-                    foreach (string val in arr)
-                    {
-                        firstStateFrequenzes.Add(Convert.ToDouble(val));
-                    }
-                }
+                List<int> values = TransfomStateinList(key);
+                keysfrequenzes.Add(values);
             }
-            return "";
+            //calculate the cosine of firststate vector with all other vector 
+            List<double> cosineDistance = new();
+            foreach(List<int> l in keysfrequenzes)
+            {
+                cosineDistance.Add(CosineDistance(valuefrequenzes, l));
+            }
+            //return the minimun state with the minimun cosine distance
+            return keys[cosineDistance.IndexOf(cosineDistance.Min())];
+        }
+        public double CosineDistance(List<int> vec1,List<int> vec2)
+        {
+            //bisogna farlo
+            return 0;
         }
         public void OpenSavedLearn(string name)
         {
