@@ -119,7 +119,7 @@ namespace AtomicDrive
             //Create eppisode
             Step e = new(state, Action);
             //rewards
-            int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection, (Car.NameActions)Actions.IndexOf(Action));
+            int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
             Points += r;
             e.Reward = r;
             //position

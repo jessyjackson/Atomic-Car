@@ -203,7 +203,7 @@ namespace AtomicDrive
             }
             return ar;
         }
-        public int GetReward((int,int) oldPos,(int,int) newPos,int speed,Car.Directions oldDirection, Car.NameActions action)
+        public int GetReward((int,int) oldPos,(int,int) newPos,int speed,Car.Directions oldDirection)
         {
             int wall = 1;
             int oldX = oldPos.Item1;

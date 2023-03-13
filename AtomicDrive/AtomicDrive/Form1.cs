@@ -74,6 +74,7 @@ namespace AtomicDrive
         }
         public void DriveCar()
         {
+            //questo è brutto
             List<Step> episode = new() ;
             for (int i = 0; i < MoveNumber; i++)
             {
@@ -107,9 +108,6 @@ namespace AtomicDrive
                     }
                 }
             }
-            //potrebbero sovrascriversi i dati nuovi con quelli vecchi, bisogna vedere se quando la macchina si schianta ritorna a capo con tutto e se quando alla fine di un 
-            //ciclo ne faccio partire una altro bisogna controllare che tutto si resetti per bene
-            //e aggiunge azioni mai fatte
             if (episode.Count > 0)
             {
                 episode.RemoveAt(episode.Count - 1);
