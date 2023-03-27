@@ -83,15 +83,15 @@ namespace AtomicDrive
                 int index = Qtables[state].IndexOf(Qtables[state].Max());
                 return actions[index];
             }
-            //string similarstate = FindTheSimilarState(state);
-            //return actions[Qtables[similarstate].IndexOf(Qtables[similarstate].Max())];
-            Random f = new();
-            return actions[f.Next(0, actions.Count)];
+            string similarstate = FindTheSimilarState(state);
+            return actions[Qtables[similarstate].IndexOf(Qtables[similarstate].Max())];
+            //Random f = new();
+            //return actions[f.Next(0, actions.Count)];
         }
         public static List<int> TransfomStateinList(string state)
         {
             List<int> values = new();
-            bool isNumber;
+            bool isNumber = false;
             string number = "";
             string checkNumber = "0123456789";
             foreach (char c in state)
@@ -114,6 +114,10 @@ namespace AtomicDrive
                     number += c;
                 }
             }
+            if (isNumber)
+            {
+                values.Add(Convert.ToInt32(number));
+            }
             return values;
         }
         public string FindTheSimilarState(string firststate)
@@ -126,8 +130,11 @@ namespace AtomicDrive
             //transform the list of keys in a list of list of double 
             foreach (string key in keys)
             {
-                List<int> values = TransfomStateinList(key);
-                keysfrequenzes.Add(values);
+                if (key != ExtraSpace)
+                {
+                    List<int> values = TransfomStateinList(key);
+                    keysfrequenzes.Add(values);
+                }
             }
             //calculate the cosine of firststate vector with all other vector 
             List<double> cosineDistance = new();
@@ -136,12 +143,26 @@ namespace AtomicDrive
                 cosineDistance.Add(CosineDistance(valuefrequenzes, l));
             }
             //return the minimun state with the minimun cosine distance
-            return keys[cosineDistance.IndexOf(cosineDistance.Min())];
+            return keys[cosineDistance.IndexOf(cosineDistance.Max()) + 1];
         }
         public double CosineDistance(List<int> vec1,List<int> vec2)
         {
-            //bisogna farlo
-            return 0;
+            double s = 0;
+            for (int i = 0; i < vec1.Count && i < vec2.Count; i++)
+            {
+                s += vec1[i] * vec2[i];
+            }
+            double v1 = 0;
+            double v2 = 0;
+            foreach (double d in vec1)
+            {
+                v1 += d * d;
+            }
+            foreach (double d in vec2)
+            {
+                v2 += d * d;
+            }
+            return s/(Math.Sqrt(v1) + Math.Sqrt(v2));
         }
         public void OpenSavedLearn(string name)
         {
