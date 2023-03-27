@@ -22,7 +22,7 @@ namespace AtomicDrive
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Max((x - (VisionRange / 2)), 0); j < Math.Min((x + (VisionRange / 2) + 1), path.GetLength(0)); j++)
+                    for (int j = Math.Max((x - (VisionRange / 2)), 0); j < Math.Min((x + (VisionRange / 2) + 1), path.GetLength(1)); j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -32,11 +32,11 @@ namespace AtomicDrive
             else if (direction == Directions.Est)
             {
 
-                for (int i = Math.Max((y - (VisionRange / 2)), 0); i < Math.Min((y + (VisionRange / 2) + 1), path.GetLength(1)); i++)
+                for (int i = Math.Max((y - (VisionRange / 2)), 0); i < Math.Min((y + (VisionRange / 2) + 1), path.GetLength(0)); i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Min((x + 1), (path.GetLength(0))); j < Math.Min((x + (VisionRange + 1)), path.GetLength(0)); j++)
+                    for (int j = Math.Min((x + 1), (path.GetLength(1))); j < Math.Min((x + (VisionRange + 1)), path.GetLength(1)); j++)
                     {
                         list.Add(path[i, j]);
                     }
@@ -45,11 +45,11 @@ namespace AtomicDrive
             }
             else if (direction == Directions.Sud)
             {
-                for (int i = Math.Min((y + 1), (path.GetLength(1))); i < Math.Min((y + 1 + VisionRange), path.GetLength(1)); i++)
+                for (int i = Math.Min((y + 1), (path.GetLength(0))); i < Math.Min((y + 1 + VisionRange), path.GetLength(0)); i++)
                 {
                     List<int> list = new();
                     matrix.Add(list);
-                    for (int j = Math.Max(0, (x - (VisionRange / 2))); j < Math.Min(path.GetLength(0), (x + (VisionRange / 2) + 1)); j++)
+                    for (int j = Math.Max(0, (x - (VisionRange / 2))); j < Math.Min(path.GetLength(1), (x + (VisionRange / 2) + 1)); j++)
                     {
                         list.Add(path[i, j]);
                     }

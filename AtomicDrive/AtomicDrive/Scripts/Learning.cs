@@ -14,7 +14,7 @@ namespace AtomicDrive
         {
             Actions = a;
             List<double> l = new();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < a.Count; i++)
             {
                 l.Add(0);
             }
@@ -46,7 +46,7 @@ namespace AtomicDrive
                 if (Qtables.Count == 0 || !(Qtables.ContainsKey(Episode[i].State)))
                 {
                     Qtables.Add(Episode[i].State, new List<double>());
-                    for (int j = 0; j < 5; j++)
+                    for (int j = 0; j < Actions.Count; j++)
                     {
                         Qtables[Episode[i].State].Add(0);
                     }

@@ -31,7 +31,7 @@ namespace AtomicDrive
             {
                 for (int j = 0; j < dtgView.ColumnCount; j++)
                 {
-                    dtgView[i, j].Style.BackColor = Color.White;
+                    dtgView[j,i].Style.BackColor = Color.White;
                 }
             }
             for (int i = path.StartCoordinate.Item1; i <= path.EndCoordinate.Item1; i++)
