@@ -161,9 +161,16 @@ namespace AtomicDrive
             List<Step> episode = Qlearn.GetSteps();
             return episode;
         }
-        public void StopAndReset()
+        public void StopAndReset(Path p,bool random)
         {
-            CarPosition = StartPosition;
+            if (random)
+            {
+                CarPosition = p.GetRandomPosition();
+            }
+            else
+            {
+                CarPosition = StartPosition;
+            }
             Points = StartPoints; 
             Speed = 1;
             Direction = StartDirection;

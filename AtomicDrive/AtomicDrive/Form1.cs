@@ -6,6 +6,7 @@ namespace AtomicDrive
         private Path path;
         private const int MORE_PIXEL = 5;
         private int MoveNumber = 20000;
+        public bool Random = false;
         public Form1()
         {
             InitializeComponent();
@@ -75,6 +76,7 @@ namespace AtomicDrive
         public void DriveCar()
         {
             //questo è brutto
+            car.StopAndReset(path,false);
             List<Step> episode = new() ;
             for (int i = 0; i < MoveNumber; i++)
             {
@@ -85,14 +87,14 @@ namespace AtomicDrive
                 {
                     string s = car.Direction.ToString();
                     car.AddState();
-                    car.StopAndReset();
+                    car.StopAndReset(path,Random);
                     lst1.Items.Add("Schiantata:" + s);
                 }
                 if (n == 1)
                 {
                     var tempEpisode = car.GetSteps();
                     car.AddState();
-                    car.StopAndReset();
+                    car.StopAndReset(path,Random);
                     if (episode.Count == 0)
                     {
                         episode = tempEpisode;
@@ -116,7 +118,7 @@ namespace AtomicDrive
             {
                 dtgView[step.Position.Item1 + MORE_PIXEL, step.Position.Item2 + MORE_PIXEL].Style.BackColor = Color.Blue;
             }
-            car.StopAndReset();
+            car.StopAndReset(path,false);
             car.Qlearn.Face = 0;
         }
         private void button1_Click(object sender, EventArgs e)
@@ -132,12 +134,13 @@ namespace AtomicDrive
             car.ChangePath(path.CarStartCoordinate, path.CarPoints,path.StartDirection);
             DrawPath();
             lst1.Items.Clear();
-            car.StopAndReset();
+            car.StopAndReset(path,false);
         }
 
         private void btnTraining_Click(object sender, EventArgs e)
         {
             EnableDisableTraining();
+            car.StopAndReset(path,false);
         }
         public void EnableDisableTraining()
         {
@@ -149,13 +152,13 @@ namespace AtomicDrive
             {
                 car.Qlearn.Train = (int)(MoveNumber - (MoveNumber * (0.1)));
                 car.Qlearn.Face = 0;
-                lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move";
+                lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " +Random;
             }
             else
             {
                 car.Qlearn.Train = 0;
                 car.Qlearn.Face = 0;
-                lblTrain.Text = "Training Disable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move";
+                lblTrain.Text = "Training Disable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " + Random;
             }
         }
         private void dtgView_SelectionChanged(object sender, EventArgs e)
@@ -174,6 +177,12 @@ namespace AtomicDrive
             {
                 e.Handled = true;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Random = !Random;
+            lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " + Random;
         }
     }
 }

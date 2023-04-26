@@ -83,10 +83,16 @@ namespace AtomicDrive
                 int index = Qtables[state].IndexOf(Qtables[state].Max());
                 return actions[index];
             }
-            string similarstate = FindTheSimilarState(state);
-            return actions[Qtables[similarstate].IndexOf(Qtables[similarstate].Max())];
-            //Random f = new();
-            //return actions[f.Next(0, actions.Count)];
+            try
+            {
+                string similarstate = FindTheSimilarState(state);
+                return actions[Qtables[similarstate].IndexOf(Qtables[similarstate].Max())];
+            }
+            catch
+            {
+                Random f = new();
+                return actions[f.Next(0, actions.Count)];
+            }
         }
         public static List<int> TransfomStateinList(string state)
         {
@@ -190,11 +196,6 @@ namespace AtomicDrive
         public void SaveLearn(string name)
         {
             // line is made in this way [key]\[Action0;Action1;Action2...]
-            if (!File.Exists(name))
-            {
-                File.Create(name);
-
-            }
             var orderQtable = Qtables.OrderBy(x => x.Key);
             var a = orderQtable.Select(x => x.Key);
             var b = orderQtable.Select(x => x.Value);
@@ -210,7 +211,12 @@ namespace AtomicDrive
                 fil.Add(ris);
             }
             fil.Sort();
-            File.WriteAllLines(name, fil);
+            TextWriter tw = new StreamWriter(name);
+            foreach (var item in fil)
+            {
+                tw.WriteLine(item);
+            }
+            tw.Close();
         }
     }
 }

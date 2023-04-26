@@ -36,6 +36,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTry = new System.Windows.Forms.TextBox();
             this.lblTrain = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgView)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.SuspendLayout();
@@ -64,13 +66,13 @@
             this.dtgView.ShowCellToolTips = false;
             this.dtgView.ShowEditingIcon = false;
             this.dtgView.ShowRowErrors = false;
-            this.dtgView.Size = new System.Drawing.Size(595, 573);
+            this.dtgView.Size = new System.Drawing.Size(1086, 958);
             this.dtgView.TabIndex = 0;
             this.dtgView.SelectionChanged += new System.EventHandler(this.dtgView_SelectionChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 24);
+            this.button1.Location = new System.Drawing.Point(6, 22);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -91,7 +93,7 @@
             // 
             this.groupBox1.Controls.Add(this.lst1);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Location = new System.Drawing.Point(613, 12);
+            this.groupBox1.Location = new System.Drawing.Point(1104, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(219, 573);
             this.groupBox1.TabIndex = 4;
@@ -101,14 +103,14 @@
             // cboPath
             // 
             this.cboPath.FormattingEnabled = true;
-            this.cboPath.Location = new System.Drawing.Point(922, 36);
+            this.cboPath.Location = new System.Drawing.Point(6, 22);
             this.cboPath.Name = "cboPath";
             this.cboPath.Size = new System.Drawing.Size(121, 23);
             this.cboPath.TabIndex = 5;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(949, 83);
+            this.button2.Location = new System.Drawing.Point(1440, 83);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 23);
             this.button2.TabIndex = 6;
@@ -118,7 +120,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(843, 12);
+            this.groupBox2.Controls.Add(this.cboPath);
+            this.groupBox2.Location = new System.Drawing.Point(1334, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(223, 131);
             this.groupBox2.TabIndex = 7;
@@ -127,16 +130,27 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button3);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.txtTry);
             this.groupBox3.Controls.Add(this.lblTrain);
             this.groupBox3.Controls.Add(this.btnTraining);
-            this.groupBox3.Location = new System.Drawing.Point(843, 149);
+            this.groupBox3.Location = new System.Drawing.Point(1334, 149);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(223, 172);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Training";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(8, 143);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Random";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label1
             // 
@@ -177,7 +191,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.btnDelete);
-            this.groupBox4.Location = new System.Drawing.Point(843, 485);
+            this.groupBox4.Location = new System.Drawing.Point(1334, 485);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(223, 100);
             this.groupBox4.TabIndex = 9;
@@ -198,19 +212,20 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 597);
+            this.ClientSize = new System.Drawing.Size(1566, 1061);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.cboPath);
             this.Controls.Add(this.dtgView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgView)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -234,5 +249,6 @@
         private Button btnDelete;
         private Label label1;
         private TextBox txtTry;
+        private Button button3;
     }
 }
