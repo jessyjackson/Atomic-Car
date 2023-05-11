@@ -3,7 +3,7 @@ namespace AtomicDrive
 {
     internal class Learning
     {
-        public int Train { get; set; } = 180000;
+        public int Train { get; set; } = 900;
         public string ExtraSpace { get; set; } = "extraspace";
         public string FileName { get; set; } = "log.txt";
         public int Face { get; set; } = 0;

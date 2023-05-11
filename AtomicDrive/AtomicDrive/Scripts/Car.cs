@@ -57,9 +57,13 @@ namespace AtomicDrive
         public void ChangePath((int,int) start,int points, Directions d)
         {
             StartPosition = start;
-            CarPosition = StartPosition;
+            CarPosition = start;
+            OldPosition = start;
             Points = points;
+            StartPoints = points;
             Direction = d;
+            OldDirection = d;
+            StartDirection = d;
         }
         public void Continue() { MoveCar(); }
         public void TurnRight()
@@ -119,21 +123,21 @@ namespace AtomicDrive
             //Create eppisode
             Step e = new(state, Action);
             //rewards
-            int r = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
-            Points += r;
-            e.Reward = r;
+            int rew = path.GetReward(OldPosition, CarPosition, Speed, OldDirection);
+            Points += rew;
+            e.Reward = rew;
             //position
             e.Position = CarPosition;
             //add eppisode to learning list
             Qlearn.AddStepToEpisode(e);
             //console log
-            //ConsoleLog(state, r);
+            //ConsoleLog(state, rew);
             //return 1 for victory, -1 for loose, 0 for nothing
-            if (Points < 0 || path.LooseReward == r)
+            if (Points < 0 || path.LooseReward == rew)
             {
                 return -1;
             }
-            if (r == path.VictoryReward)
+            if (rew == path.VictoryReward)
             {
                 return 1;
             }

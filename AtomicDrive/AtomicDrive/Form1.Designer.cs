@@ -66,7 +66,7 @@
             this.dtgView.ShowCellToolTips = false;
             this.dtgView.ShowEditingIcon = false;
             this.dtgView.ShowRowErrors = false;
-            this.dtgView.Size = new System.Drawing.Size(1086, 958);
+            this.dtgView.Size = new System.Drawing.Size(837, 663);
             this.dtgView.TabIndex = 0;
             this.dtgView.SelectionChanged += new System.EventHandler(this.dtgView_SelectionChanged);
             // 
@@ -86,16 +86,16 @@
             this.lst1.ItemHeight = 15;
             this.lst1.Location = new System.Drawing.Point(6, 52);
             this.lst1.Name = "lst1";
-            this.lst1.Size = new System.Drawing.Size(181, 499);
+            this.lst1.Size = new System.Drawing.Size(260, 499);
             this.lst1.TabIndex = 3;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lst1);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Location = new System.Drawing.Point(1104, 12);
+            this.groupBox1.Location = new System.Drawing.Point(1033, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(219, 573);
+            this.groupBox1.Size = new System.Drawing.Size(290, 573);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "car";
@@ -137,14 +137,14 @@
             this.groupBox3.Controls.Add(this.btnTraining);
             this.groupBox3.Location = new System.Drawing.Point(1334, 149);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(223, 172);
+            this.groupBox3.Size = new System.Drawing.Size(223, 243);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Training";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(8, 143);
+            this.button3.Location = new System.Drawing.Point(6, 194);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 4;
@@ -212,7 +212,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1566, 1061);
+            this.ClientSize = new System.Drawing.Size(1566, 687);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button2);

@@ -5,13 +5,13 @@ namespace AtomicDrive
         private Car car;
         private Path path;
         private const int MORE_PIXEL = 5;
-        private int MoveNumber = 20000;
+        private int MoveNumber = 1000;
         public bool Random = false;
         public Form1()
         {
             InitializeComponent();
             path = new();
-            car = new(path.CarStartCoordinate,path.CarPoints, path.StartDirection);
+            car = new(path.CarStartCoordinate,path.CarMaxPoints, path.StartDirection);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -53,10 +53,10 @@ namespace AtomicDrive
                 }
             }
             dtgView[car.CarPosition.Item1 + MORE_PIXEL, car.CarPosition.Item2 + MORE_PIXEL].Style.BackColor = Color.DarkOrange;
-        }
+}
         private void AdjustRowColumnHeight()
         {
-            int rH = (dtgView.Height / dtgView.RowCount)- 1;
+            int rH = (dtgView.Height / dtgView.RowCount);
             if (rH > 0)
             {
                 for (int i = 0; i < dtgView.RowCount; i++)
@@ -64,7 +64,7 @@ namespace AtomicDrive
                     dtgView.Rows[i].Height = rH;
                 }
             }
-            int cH = (dtgView.Width / dtgView.ColumnCount) - 1;
+            int cH = (dtgView.Width / dtgView.ColumnCount) ;
             if (cH > 0)
             {
                 for (int i = 0; i < dtgView.ColumnCount; i++)
@@ -77,24 +77,28 @@ namespace AtomicDrive
         {
             //questo è brutto
             car.StopAndReset(path,false);
-            List<Step> episode = new() ;
-            for (int i = 0; i < MoveNumber; i++)
+            List<Step> episode = new();
+            int state = 0;
+            int move = 0;
+            do
             {
-                int n = car.HandleAction(path);
-                lst1.Items.Add(car.Move + " " + (Car.NameActions)car.Actions.IndexOf(car.Action) + " " + car.Direction);
+                int actionResult = car.HandleAction(path);
+                lst1.Items.Add(car.Move + "\\" + move +" " + (Car.NameActions)car.Actions.IndexOf(car.Action) + " " + car.Direction);
                 dtgView[car.CarPosition.Item1 + MORE_PIXEL, car.CarPosition.Item2 + MORE_PIXEL].Style.BackColor = Color.Violet;
-                if (n == -1)
+                if (actionResult == -1)
                 {
                     string s = car.Direction.ToString();
                     car.AddState();
-                    car.StopAndReset(path,Random);
+                    car.StopAndReset(path, Random);
+                    lst1.Items.Add("numero mossa" + state);
                     lst1.Items.Add("Schiantata:" + s);
+                    state++;   
                 }
-                if (n == 1)
+                else if (actionResult == 1)
                 {
                     var tempEpisode = car.GetSteps();
                     car.AddState();
-                    car.StopAndReset(path,Random);
+                    car.StopAndReset(path, Random);
                     if (episode.Count == 0)
                     {
                         episode = tempEpisode;
@@ -103,13 +107,17 @@ namespace AtomicDrive
                     {
                         episode = tempEpisode;
                     }
+                    lst1.Items.Add("numero mossa" + state);
                     lst1.Items.Add("Vittoria#############################");
                     if (car.Qlearn.Train == 0)
                     {
                         break;
                     }
                 }
-            }
+                move++;
+
+            } while (state < MoveNumber);
+
             if (episode.Count > 0)
             {
                 episode.RemoveAt(episode.Count - 1);
@@ -131,10 +139,11 @@ namespace AtomicDrive
         private void button2_Click(object sender, EventArgs e)
         {
             path.ChangePath(cboPath.SelectedIndex);
-            car.ChangePath(path.CarStartCoordinate, path.CarPoints,path.StartDirection);
+            car.ChangePath(path.CarStartCoordinate, path.CarMaxPoints,path.StartDirection);
             DrawPath();
             lst1.Items.Clear();
             car.StopAndReset(path,false);
+            InfoText();
         }
 
         private void btnTraining_Click(object sender, EventArgs e)
@@ -150,16 +159,16 @@ namespace AtomicDrive
             }
             if (car.Qlearn.Train == 0)
             {
-                car.Qlearn.Train = (int)(MoveNumber - (MoveNumber * (0.1)));
+                float average = (((path.CarMaxPoints + path.CarMinMove) / 2) * MoveNumber);
+                car.Qlearn.Train = (int)(average - (average * (0.3)));
                 car.Qlearn.Face = 0;
-                lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " +Random;
             }
             else
             {
                 car.Qlearn.Train = 0;
                 car.Qlearn.Face = 0;
-                lblTrain.Text = "Training Disable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " + Random;
             }
+            InfoText();
         }
         private void dtgView_SelectionChanged(object sender, EventArgs e)
         {
@@ -182,7 +191,12 @@ namespace AtomicDrive
         private void button3_Click(object sender, EventArgs e)
         {
             Random = !Random;
-            lblTrain.Text = "Training Enable, " + MoveNumber + ", move\n" + " " + car.Qlearn.Train + " training move " + "Random: " + Random;
+            InfoText();
+        }
+        public void InfoText()
+        {
+            float average = (((path.CarMaxPoints + path.CarMinMove) / 2) * MoveNumber);
+            lblTrain.Text = "Training Enable, " + MoveNumber + ",move\n" + average + "effective average move\n" + car.Qlearn.Train + " training move " + "\nRandom position: " + Random + "\n";
         }
     }
 }

@@ -7,7 +7,8 @@ namespace AtomicDrive
         public int[,] Matrix { get; set; } = new int[25, 25];
         public Car.Directions StartDirection { get; set; }
         public (int, int) CarStartCoordinate { get; set; }
-        public int CarPoints { get; set; }
+        public int CarMaxPoints { get; set; }
+        public int CarMinMove { get; set; }
         public (int, int) StartCoordinate { get; set; }
         public (int, int) EndCoordinate { get; set; }
         public int MoveReward { get; set; } = -1;
@@ -17,7 +18,6 @@ namespace AtomicDrive
         public Path()
         {
             StraightLine();
-            //LeftBorsatoCurve();
             Actions = new()
             {
                 "StraightLine",
@@ -61,7 +61,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((3, 0), (21, 2));
             CarStartCoordinate = (12, 23);
-            CarPoints = 15;
+            CarMaxPoints = 15;
+            CarMinMove = 10;
             StartDirection = Car.Directions.Nord;
         }
         public void RightCurve()
@@ -97,7 +98,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((23, 2), (24, 6));
             CarStartCoordinate = (12, 23);
-            CarPoints = 30;
+            CarMaxPoints = 30;
+            CarMinMove = 15;
             StartDirection = Car.Directions.Nord;
         }
         public void LeftCurve()
@@ -132,7 +134,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((0, 2), (2, 6));
             CarStartCoordinate = (12, 23);
-            CarPoints = 25;
+            CarMaxPoints = 25;
+            CarMinMove = 15;
             StartDirection = Car.Directions.Nord;
         }
         public void LeftBorsatoCurve()
@@ -167,7 +170,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((23, 4), (24, 13));
             CarStartCoordinate = (12, 23);
-            CarPoints = 25;
+            CarMaxPoints = 25;
+            CarMinMove = 15;
             StartDirection = Car.Directions.Nord;
         }
         public void RoudaBout()
@@ -203,7 +207,8 @@ namespace AtomicDrive
             Matrix = arr;
             CarStartCoordinate = (12, 23);
             SetCoordinate((9, 0), (15, 1));
-            CarPoints = 30;
+            CarMaxPoints = 30;
+            CarMinMove = 15;
             StartDirection = Car.Directions.Nord;
         }
         public void Qualcosa()
@@ -314,7 +319,8 @@ namespace AtomicDrive
             Matrix = arr;
             SetCoordinate((0, 5), (0, 15));
             CarStartCoordinate = (9, 98);
-            CarPoints = 200;
+            CarMaxPoints = 1000;
+            CarMinMove = 150;
             StartDirection = Car.Directions.Nord;
 
         }
