@@ -64,7 +64,7 @@ namespace AtomicDrive
                     dtgView.Rows[i].Height = rH;
                 }
             }
-            int cH = (dtgView.Width / dtgView.ColumnCount) ;
+            int cH = (dtgView.Width / dtgView.ColumnCount);
             if (cH > 0)
             {
                 for (int i = 0; i < dtgView.ColumnCount; i++)
@@ -83,15 +83,15 @@ namespace AtomicDrive
             do
             {
                 int actionResult = car.HandleAction(path);
-                lst1.Items.Add(car.Move + "\\" + move +" " + (Car.NameActions)car.Actions.IndexOf(car.Action) + " " + car.Direction);
+                lst1.Items.Add(car.Move + " " + (Car.NameActions)car.Actions.IndexOf(car.Action) + " " + car.Direction);
                 dtgView[car.CarPosition.Item1 + MORE_PIXEL, car.CarPosition.Item2 + MORE_PIXEL].Style.BackColor = Color.Violet;
                 if (actionResult == -1)
                 {
                     string s = car.Direction.ToString();
                     car.AddState();
                     car.StopAndReset(path, Random);
-                    lst1.Items.Add("numero mossa" + state);
-                    lst1.Items.Add("Schiantata:" + s);
+                   // lst1.Items.Add("numero mossa" + state);
+                   lst1.Items.Add("Lost in direction: " + s + "-----------------");
                     state++;   
                 }
                 else if (actionResult == 1)
@@ -107,8 +107,8 @@ namespace AtomicDrive
                     {
                         episode = tempEpisode;
                     }
-                    lst1.Items.Add("numero mossa" + state);
-                    lst1.Items.Add("Vittoria#############################");
+                    //lst1.Items.Add("numero mossa" + state);
+                    lst1.Items.Add("Victory#############################");
                     if (car.Qlearn.Train == 0)
                     {
                         break;
@@ -196,7 +196,20 @@ namespace AtomicDrive
         public void InfoText()
         {
             float average = (((path.CarMaxPoints + path.CarMinMove) / 2) * MoveNumber);
-            lblTrain.Text = "Training Enable, " + MoveNumber + ",move\n" + average + "effective average move\n" + car.Qlearn.Train + " training move " + "\nRandom position: " + Random + "\n";
+            if (car.Qlearn.Train == 0)
+            {
+
+                lblTrain.Text =   "Training disable\n" 
+                                + "Number of attempts: " + MoveNumber +"\n"
+                                + "Random position: " + Random + "\n";
+            }
+            else
+            {
+                //lblTrain.Text = "Training Enable, " + MoveNumber + ",move\n" + average + "effective average move\n" + car.Qlearn.Train + " training move " + "\nRandom position: " + Random + "\n";
+                lblTrain.Text = "Training enable\n"
+                + "Number of attempts: " + MoveNumber + "\n"
+                + "Random position: " + Random + "\n";
+            }
         }
     }
 }

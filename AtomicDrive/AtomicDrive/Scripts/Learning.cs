@@ -7,6 +7,7 @@ namespace AtomicDrive
         public string ExtraSpace { get; set; } = "extraspace";
         public string FileName { get; set; } = "log.txt";
         public int Face { get; set; } = 0;
+
         public Dictionary<string, List<double>> Qtables = new();
         public List<Step> Episode { get; set; } = new();
         public List<Action>? Actions { get; set; }

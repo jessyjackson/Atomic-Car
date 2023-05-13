@@ -24,8 +24,8 @@ namespace AtomicDrive
                 "RightCurve",
                 "LeftCurve",
                 "RoudaBout",
-                "LeftBorsatoCurve",
-                "Qualcosa"
+                "Right",
+                "Circuit"
             };
         }
         public void StraightLine()
@@ -62,7 +62,7 @@ namespace AtomicDrive
             SetCoordinate((3, 0), (21, 2));
             CarStartCoordinate = (12, 23);
             CarMaxPoints = 15;
-            CarMinMove = 10;
+            CarMinMove = 7;
             StartDirection = Car.Directions.Nord;
         }
         public void RightCurve()
@@ -99,7 +99,7 @@ namespace AtomicDrive
             SetCoordinate((23, 2), (24, 6));
             CarStartCoordinate = (12, 23);
             CarMaxPoints = 30;
-            CarMinMove = 15;
+            CarMinMove = 13;
             StartDirection = Car.Directions.Nord;
         }
         public void LeftCurve()
@@ -135,10 +135,10 @@ namespace AtomicDrive
             SetCoordinate((0, 2), (2, 6));
             CarStartCoordinate = (12, 23);
             CarMaxPoints = 25;
-            CarMinMove = 15;
+            CarMinMove = 13;
             StartDirection = Car.Directions.Nord;
         }
-        public void LeftBorsatoCurve()
+        public void Right()
         {
             int[,] arr = {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -171,7 +171,7 @@ namespace AtomicDrive
             SetCoordinate((23, 4), (24, 13));
             CarStartCoordinate = (12, 23);
             CarMaxPoints = 25;
-            CarMinMove = 15;
+            CarMinMove = 14;
             StartDirection = Car.Directions.Nord;
         }
         public void RoudaBout()
@@ -211,7 +211,7 @@ namespace AtomicDrive
             CarMinMove = 15;
             StartDirection = Car.Directions.Nord;
         }
-        public void Qualcosa()
+        public void Circuit()
         {
             int[,]arr = new int[100, 100]
             {
@@ -317,10 +317,10 @@ namespace AtomicDrive
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             };
             Matrix = arr;
-            SetCoordinate((0, 5), (0, 15));
+            SetCoordinate((0, 5), (2, 15));
             CarStartCoordinate = (9, 98);
             CarMaxPoints = 1000;
-            CarMinMove = 150;
+            CarMinMove = 200;
             StartDirection = Car.Directions.Nord;
 
         }
@@ -332,13 +332,19 @@ namespace AtomicDrive
             {
                 ris.Item1 = r.Next(0, Matrix.GetLength(1));
                 ris.Item2 = r.Next(0, Matrix.GetLength(0));
-                if (Matrix[ris.Item2, ris.Item1] == 0)
+                Console.WriteLine("start" + StartCoordinate);
+                Console.WriteLine("end" + EndCoordinate);
+                Console.WriteLine("c" + ris);
+                if (!(ris.Item1 >= StartCoordinate.Item1 && ris.Item1 <= EndCoordinate.Item1 && ris.Item2 >= StartCoordinate.Item2 && ris.Item2 <= EndCoordinate.Item2))
                 {
-                    return ris;
+                        if (Matrix[ris.Item2, ris.Item1] == 0)
+                        {
+                            return ris;
+                        }
                 }
+
             }
         }
-
         public void SetCoordinate((int, int) start, (int, int) finish)
         {
             StartCoordinate = start;
