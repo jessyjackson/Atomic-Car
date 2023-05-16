@@ -169,7 +169,7 @@ namespace AtomicDrive
             };
             Matrix = arr;
             SetCoordinate((23, 4), (24, 13));
-            CarStartCoordinate = (12, 23);
+            CarStartCoordinate = (5, 23);
             CarMaxPoints = 25;
             CarMinMove = 14;
             StartDirection = Car.Directions.Nord;
