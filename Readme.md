@@ -29,6 +29,10 @@ Execute the .exe
 
 Use the release version on this repository
 
+# Docs
+
+Full documentation of the project (in Italian) -> [HERE](https://github.com/jessyjackson/Atomic-Car/docs/docs.pdf).
+
 
 
 
