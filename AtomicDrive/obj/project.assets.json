@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\AtomicDrive\\Atomic-Car.csproj",
+      "projectUniqueName": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\Atomic-Car.csproj",
       "projectName": "Atomic-Car",
-      "projectPath": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\AtomicDrive\\Atomic-Car.csproj",
+      "projectPath": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\Atomic-Car.csproj",
       "packagesPath": "C:\\Users\\lucon\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\AtomicDrive\\obj\\",
+      "outputPath": "C:\\Users\\lucon\\Desktop\\scuola\\AtomicCar\\AtomicDrive\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
