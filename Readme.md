@@ -1,6 +1,6 @@
 # Atomic Car
 This is a simple AI that use Reinforcment Learning and Q-learning with Bellman formula to create a small car able to complete race tracks. \
-Implemented in a windows software this programm allow the user to experiment with the the different training methods, and see the result memory. \
+Implemented in a windows software this programm allow the user to experiment with the the different training methods, and see the result memory. 
 ## The problem
 This was a school project to understanding the base of Machine Learning and Reinforcment Learning. \
 Creating a c# software all from scratch without any Machine Learning Library.
